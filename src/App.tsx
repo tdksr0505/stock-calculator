@@ -7,7 +7,7 @@ function App() {
     <>
       <div className="p-10">
         <Tabs
-          defaultValue={TabType.TrailCalculate}
+          defaultValue={TabType.Increase}
           classNames={{
             tab: 'border-b-[3px]',
             tabLabel: 'text-[22px] font-semibold',
