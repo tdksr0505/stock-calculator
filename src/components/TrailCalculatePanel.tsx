@@ -55,7 +55,6 @@ export default function TrailCalculatePanel() {
     const newOrderTrials = [...trialOrderData]
     newOrderTrials[index][key] = value
     setTrialOrderData(newOrderTrials)
-    return
   }
   return (
     <>
@@ -65,7 +64,6 @@ export default function TrailCalculatePanel() {
             <div className="flex items-center gap-4">
               <div className="shrink-0">總資金</div>
               <Input
-                type="number"
                 classNames={{ input: 'text-[16px]' }}
                 value={totalFunds || ''}
                 onChange={(e) => setTotalFunds(Number(e.target.value))}
@@ -74,7 +72,6 @@ export default function TrailCalculatePanel() {
             <div className="flex items-center gap-4">
               <div className="shrink-0">買入比例</div>
               <Input
-                type="number"
                 classNames={{ input: 'text-[16px]' }}
                 value={allocation || ''}
                 onChange={(e) => setAllocation(Number(e.target.value))}
@@ -122,7 +119,6 @@ export default function TrailCalculatePanel() {
                     <div className="flex gap-1 itmes-center flex-wrap">
                       <span className="pt-[3px]">價格</span>
                       <Input
-                        type="number"
                         classNames={{ input: 'text-[16px]' }}
                         value={trialOrderData[index].amountSpent}
                         onChange={(e) => updateTrialOrderData(index, 'amountSpent', Number(e.target.value))}
@@ -131,7 +127,6 @@ export default function TrailCalculatePanel() {
                     <div className="flex gap-1 itmes-center flex-wrap">
                       <span className="pt-[3px]">數量</span>
                       <Input
-                        type="number"
                         classNames={{ input: 'text-[16px]' }}
                         value={trialOrderData[index].sharesPurchased}
                         onChange={(e) => updateTrialOrderData(index, 'sharesPurchased', Number(e.target.value))}
