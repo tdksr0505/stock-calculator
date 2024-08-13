@@ -5,16 +5,16 @@ import { v4 as uuidv4 } from 'uuid'
 import { RxCrossCircled } from 'react-icons/rx'
 type TrialOrder = {
   id: string
-  amountSpent: number
-  sharesPurchased: number
+  amountSpent: number | undefined
+  sharesPurchased: number | undefined
   unit: 'shares' | 'lots'
 }
 
 const getDefaultTrialOrder = () => {
   return {
     id: uuidv4(),
-    amountSpent: 0,
-    sharesPurchased: 0,
+    amountSpent: undefined,
+    sharesPurchased: undefined,
     unit: 'shares' as 'shares' | 'lots',
   }
 }
@@ -28,7 +28,9 @@ export default function TrailCalculatePanel() {
     if (totalFunds === 0 || !allocation) return 0
     let needToBuy = totalFunds * allocation * 0.01
     trialOrderData.forEach((el) => {
-      needToBuy = needToBuy - el.amountSpent * el.sharesPurchased * (el.unit === 'shares' ? 1 : 1000)
+      const amountSpent = el.amountSpent ?? 0
+      const sharesPurchased = el.sharesPurchased ?? 0
+      needToBuy = needToBuy - amountSpent * sharesPurchased * (el.unit === 'shares' ? 1 : 1000)
     })
     return needToBuy
   }, [totalFunds, allocation, trialOrderData])
@@ -37,8 +39,10 @@ export default function TrailCalculatePanel() {
     let totalAmount = 0
     let totalShares = 0
     trialOrderData.forEach((el) => {
-      const shares = el.unit === 'shares' ? el.sharesPurchased : el.sharesPurchased * 1000
-      totalAmount = totalAmount + el.amountSpent * shares
+      const amountSpent = el.amountSpent ?? 0
+      const sharesPurchased = el.sharesPurchased ?? 0
+      const shares = el.unit === 'shares' ? sharesPurchased : sharesPurchased * 1000
+      totalAmount = totalAmount + amountSpent * shares
       totalShares = totalShares + shares
     })
 
@@ -55,6 +59,7 @@ export default function TrailCalculatePanel() {
     const newOrderTrials = [...trialOrderData]
     newOrderTrials[index][key] = value
     setTrialOrderData(newOrderTrials)
+    return
   }
   return (
     <>
@@ -64,6 +69,7 @@ export default function TrailCalculatePanel() {
             <div className="flex items-center gap-4">
               <div className="shrink-0">總資金</div>
               <Input
+                type="number"
                 classNames={{ input: 'text-[16px]' }}
                 value={totalFunds || ''}
                 onChange={(e) => setTotalFunds(Number(e.target.value))}
@@ -72,6 +78,7 @@ export default function TrailCalculatePanel() {
             <div className="flex items-center gap-4">
               <div className="shrink-0">買入比例</div>
               <Input
+                type="number"
                 classNames={{ input: 'text-[16px]' }}
                 value={allocation || ''}
                 onChange={(e) => setAllocation(Number(e.target.value))}
@@ -119,6 +126,7 @@ export default function TrailCalculatePanel() {
                     <div className="flex gap-1 itmes-center flex-wrap">
                       <span className="pt-[3px]">價格</span>
                       <Input
+                        type="number"
                         classNames={{ input: 'text-[16px]' }}
                         value={trialOrderData[index].amountSpent}
                         onChange={(e) => updateTrialOrderData(index, 'amountSpent', Number(e.target.value))}
@@ -127,6 +135,7 @@ export default function TrailCalculatePanel() {
                     <div className="flex gap-1 itmes-center flex-wrap">
                       <span className="pt-[3px]">數量</span>
                       <Input
+                        type="number"
                         classNames={{ input: 'text-[16px]' }}
                         value={trialOrderData[index].sharesPurchased}
                         onChange={(e) => updateTrialOrderData(index, 'sharesPurchased', Number(e.target.value))}
